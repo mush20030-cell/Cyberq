@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحدي الهجمات الإلكترونية - الأمن السيبراني</title>
+  
+  <!-- خط Almarai العصري والأنيق -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.75);
+      --accent-color: #6366f1;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.2) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.2) 0px, transparent 50%);
+      font-family: 'Almarai', sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    header {
+      position: fixed;
+      top: 20px;
+      width: 90%;
+      max-width: 800px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      padding: 14px 28px;
+      border-radius: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    header .logo {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #a855f7;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    header .status-tag {
+      font-size: 0.85rem;
+      background: rgba(99, 102, 241, 0.2);
+      color: #818cf8;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-weight: 700;
+    }
+
+    .quiz-card {
+      margin-top: 80px;
+      width: 100%;
+      max-width: 700px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 28px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 35px 30px;
+    }
+
+    .start-screen, .result-screen {
+      text-align: center;
+    }
+
+    .profile-badge {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(to right, #ffffff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      font-size: 1.05rem;
+      margin-bottom: 25px;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .timer-badge {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #818cf8;
+      padding: 4px 14px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .question-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 22px;
+      line-height: 1.6;
+    }
+
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-family: 'Almarai', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: right;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    /* 🎨 ألوان الخيارات المحددة: (أ) أخضر، (ب) أزرق، (ج) أصفر */
+    .option-green {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #6ee7b7;
+    }
+    .option-green:hover:not(:disabled) {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: rgba(16, 185, 129, 0.6);
+      transform: translateX(-4px);
+    }
+
+    .option-blue {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+    }
+    .option-blue:hover:not(:disabled) {
+      background: rgba(59, 130, 246, 0.25);
+      border-color: rgba(59, 130, 246, 0.6);
+      transform: translateX(-4px);
+    }
+
+    .option-yellow {
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fde047;
+    }
+    .option-yellow:hover:not(:disabled) {
+      background: rgba(245, 158, 11, 0.25);
+      border-color: rgba(245, 158, 11, 0.6);
+      transform: translateX(-4px);
+    }
+
+    /* أنماط إظهار الإجابة الصحيحة والخاطئة فوراً */
+    .option-btn.correct-ans {
+      background: rgba(34, 197, 94, 0.25) !important;
+      border: 2px solid #22c55e !important;
+      color: #4ade80 !important;
+      font-weight: 800;
+    }
+
+    .option-btn.wrong-ans {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border: 2px solid #ef4444 !important;
+      color: #fca5a5 !important;
+    }
+
+    .feedback-box {
+      margin-top: 20px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 1rem;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .feedback-box.correct-fb {
+      display: block;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+    }
+
+    .feedback-box.wrong-fb {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .main-btn {
+      background: linear-gradient(135deg, var(--accent-color), #a855f7);
+      color: white;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-family: 'Almarai', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
+      margin-top: 22px;
+    }
+
+    .main-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .score-badge {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #a855f7;
+      margin: 15px 0;
+    }
+
+    .time-detail {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <span>👾</span> تحدي الهجمات الإلكترونية
+    </div>
+    <div class="status-tag">المشهد الرابع</div>
+  </header>
+
+  <div class="quiz-card">
+    
+    <!-- الشاشة الأولى: البداية -->
+    <div id="start-screen" class="start-screen">
+      <div class="profile-badge">🕵️‍♂️</div>
+      <h1>من يقف وراء الهجمات الإلكترونية؟</h1>
+      <p>اختبري معرفتكِ بالجهات المخترقة وأهداف الهجمات السيبرانية من خلال 5 أسئلة سريعة وممتعة!</p>
+      <button class="main-btn" onclick="startQuiz()">ابدأ اللعبة 🚀</button>
+    </div>
+
+    <!-- شاشة الأسئلة -->
+    <div id="quiz-screen" style="display: none;">
+      <div class="quiz-header">
+        <span id="question-count">سؤال 1 من 5</span>
+        <span class="timer-badge">⏱️ الوقت: <span id="timer-text">0</span> ثانية</span>
+      </div>
+
+      <div class="question-title" id="question-text">نص السؤال...</div>
+
+      <div class="options-list" id="options-container"></div>
+
+      <div id="feedback-box" class="feedback-box"></div>
+
+      <button id="next-btn" class="main-btn" style="display: none;" onclick="nextQuestion()">السؤال التالي ◀</button>
+    </div>
+
+    <!-- الشاشة الأخيرة: النتيجة -->
+    <div id="result-screen" class="result-screen" style="display: none;">
+      <div class="profile-badge">🏆</div>
+      <h1>أحسنتِ! اكتمل التحدي</h1>
+      <p>نتيجة اختباركِ في معرفة أهداف وخطورة الهجمات الإلكترونية:</p>
+      
+      <div class="score-badge" id="final-score">5 / 5</div>
+      <div class="time-detail" id="final-time">الزمن المستغرق: 0 ثانية</div>
+
+      <button class="main-btn" onclick="resetQuiz()">إعادة التحدي 🔄</button>
+    </div>
+
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "1. وش هو الهدف الرئيسي لمجرمي الإنترنت والعصابات المنظمة عند تنفيذ الهجمات؟",
+        options: [
+          { letter: "أ", text: "تنظيف الذاكرة المؤقتة للجهاز" },
+          { letter: "ب", text: "سرقة الأموال والبيانات الشخصية" },
+          { letter: "ج", text: "تحديث النظام ورسم الخرائط" }
+        ],
+        correct: 1,
+        explain: "الهدف الأساسي لمجرمي الإنترنت المنظمين هو سرقة الأموال والبيانات الحساسة."
+      },
+      {
+        question: "2. هل كل الهجمات الإلكترونية هدفها السرقة فقط؟",
+        options: [
+          { letter: "أ", text: "نعم، جميعها تهدف للسرقة فقط" },
+          { letter: "ب", text: "لا، تختلف أهدافها بين السرقة، التجسس، والتخريب" },
+          { letter: "ج", text: "لا، هدفها الوحيد هو إبطاء سرعة الإنترنت" }
+        ],
+        correct: 1,
+        explain: "تتعدد الجهات وتختلف أهدافها؛ فبعضها يهدف للسرقة، وبعضها للتجسس أو التخريب."
+      },
+      {
+        question: "3. من هي الجهات التي قد تنفذ هجمات معقدة بهدف التجسس وجمع المعلومات؟",
+        options: [
+          { letter: "أ", text: "جهات مدعومة من دول أو منظمات كبرى" },
+          { letter: "ب", text: "أطفال يدرسون البرمجة للمرة الأولى" },
+          { letter: "ج", text: "متاجر التطبيقات الرقمية الرسمية" }
+        ],
+        correct: 0,
+        explain: "الهجمات المتقدمة المخصصة للتجسس وجمع المعلومات غالباً ما تكون مدعومة من جهات أو دول كبرى."
+      },
+      {
+        question: "4. ليش نقوم بتحليل الأدلة الرقمية بعد وقوع الهجوم الإلكتروني؟",
+        options: [
+          { letter: "أ", text: "لنكتشف مصدر الهجوم ونحمي الأنظمة من تكراره" },
+          { letter: "ب", text: "لمسح جميع الملفات الموجودة في الجهاز" },
+          { letter: "ج", text: "لزيادة سرعة المعالج فقط" }
+        ],
+        correct: 0,
+        explain: "تحليل الأدلة الرقمية يُمكّننا من كشف مصدر الهجوم ومعالجة الثغرات لحماية الأنظمة مستقبلاً."
+      },
+      {
+        question: "5. كيف يرتبط الأمن السيبراني بحماية وطنا الغالي المملكة العربية السعودية؟",
+        options: [
+          { letter: "أ", text: "يعتبر ترفاً تقنياً يمكن الاستغناء عنه" },
+          { letter: "ب", text: "يقتصر فقط على حماية ألعاب الفيديو" },
+          { letter: "ج", text: "أصبح جزءاً مهماً ورئيساً من حماية الوطن ومقدراته الرقمية" }
+        ],
+        correct: 2,
+        explain: "حماية العالم الرقمي والأنظمة أصبحت جزءاً لا يتجزأ من أمن واستقرار الوطن."
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timerSeconds = 0;
+    let timerInterval = null;
+
+    const colorClasses = ['option-green', 'option-blue', 'option-yellow'];
+
+    function startQuiz() {
+      document.getElementById('start-screen').style.display = 'none';
+      document.getElementById('result-screen').style.display = 'none';
+      document.getElementById('quiz-screen').style.display = 'block';
+
+      currentQuestionIndex = 0;
+      score = 0;
+      timerSeconds = 0;
+
+      document.getElementById('timer-text').innerText = timerSeconds;
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        document.getElementById('timer-text').innerText = timerSeconds;
+      }, 1000);
+
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestionIndex];
+      document.getElementById('question-count').innerText = `سؤال ${currentQuestionIndex + 1} من ${questions.length}`;
+      document.getElementById('question-text').innerText = q.question;
+
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      const feedbackBox = document.getElementById('feedback-box');
+      feedbackBox.className = 'feedback-box';
+      feedbackBox.style.display = 'none';
+      
+      document.getElementById('next-btn').style.display = 'none';
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement('button');
+        const colorClass = colorClasses[index % colorClasses.length];
+        btn.className = `option-btn ${colorClass}`;
+        btn.innerHTML = `<span><strong>${opt.letter}.</strong> ${opt.text}</span>`;
+        btn.onclick = () => selectOption(index);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(selectedIndex) {
+      const q = questions[currentQuestionIndex];
+      const buttons = document.querySelectorAll('.option-btn');
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      const feedbackBox = document.getElementById('feedback-box');
+
+      if (selectedIndex === q.correct) {
+        score++;
+        buttons[selectedIndex].classList.add('correct-ans');
+        feedbackBox.className = 'feedback-box correct-fb';
+        feedbackBox.innerHTML = `✅ <strong>إجابة صحيحة!</strong> ${q.explain}`;
+      } else {
+        buttons[selectedIndex].classList.add('wrong-ans');
+        buttons[q.correct].classList.add('correct-ans');
+        feedbackBox.className = 'feedback-box wrong-fb';
+        feedbackBox.innerHTML = `❌ <strong>إجابة خاطئة!</strong> الإجابة الصحيحة هي (${q.options[q.correct].letter}). ${q.explain}`;
+      }
+
+      document.getElementById('next-btn').style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      clearInterval(timerInterval);
+      document.getElementById('quiz-screen').style.display = 'none';
+      document.getElementById('result-screen').style.display = 'block';
+
+      document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+      document.getElementById('final-time').innerText = `الزمن المستغرق: ${timerSeconds} ثانية`;
+    }
+
+    function resetQuiz() {
+      startQuiz();
+    }
+  </script>
+
+</body>
+</html>
